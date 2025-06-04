@@ -4,8 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Calculator</title>
+
+    <style>
+        tr{
+        }
+
+        th{
+            background-color: #444;
+            height: 50px;
+            font-size: 1.5em;
+            text-align: right;
+            padding-right: 20px;
+        }
+
+
+        td{
+            border: solid 1px #555;
+            height: 30px;
+        }
+
+        .operation{
+            background-color: #e8852e;
+        }
+
+        .num{
+            background-color: #AAA;
+        }
+
+        .sign{
+            background-color: #777;
+        }
+
+        table{
+            border-collapse: collapse;
+            text-align: center;
+            width: 160px;
+            color: #FFF;
+            table-layout: fixed;
+        }
+    </style>
 </head>
 <body>
+    <table>
+        <tr>
+            <th colspan="4">0</th>
+        </tr>
+
+        <tr>
+            <td class="sign">AC</td>
+            <td class="sign">+/-</td>
+            <td class="sign">%</td>
+            <td class="operation">&#247</td>
+        </tr>
+
+        <tr>
+            <td class="num">7</td>
+            <td class="num">8</td>
+            <td class="num">9</td>
+            <td class="operation">&#215</td>
+        </tr>
+
+        <tr>
+            <td class="num">4</td>
+            <td class="num">5</td>
+            <td class="num">6</td>
+            <td class="operation">-</td>
+        </tr>
+
+        <tr>
+            <td class="num">1</td>
+            <td class="num">2</td>
+            <td class="num">3</td>
+            <td class="operation">+</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="num">0</td>
+            <td class="num">.</td>
+            <td class="operation">=</td>
+        </tr>
+
+
+    </table>
+
+    <script>
+        function add(a, b){
+            return a + b;
+        }
+
+        function subtract(a, b){
+            return a - b;
+        }
+
+        function multiply(a, b){
+            return a * b;
+        }
+
+        function divide(a, b){
+            return a / b;
+        }
+
+        function operate(left, right, operation){
+            switch (operation){
+            case "+": 
+                return add(left, right);
+            case "-":
+                return subtract(left, right);
+            case "*": 
+                return multiply(left, right);
+            case "/": 
+                return divide(left, right)
+            }
+        }
+
+        let lhs;
+        let rhs;
+        let operation;
+        console.log(divide(1, 2));
+
+
+    </script>
     
 </body>
 </html>
