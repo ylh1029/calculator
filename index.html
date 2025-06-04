@@ -12,6 +12,7 @@
             text-align: right;
             padding: -10px;
             padding-right: 30px;
+            
         }
 
         p{
@@ -37,6 +38,9 @@
         }
 
         table{
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 50px;
             border-collapse: collapse;
             text-align: center;
             width: 210px;
@@ -102,6 +106,10 @@
         }
 
         function divide(a, b){
+            if(Number(b) === 0){
+                alert("You cannot divide by 0!!");
+                return;
+            }
             return Number(a) / Number(b);
         }
 
@@ -132,6 +140,7 @@
 
         const clickable = document.querySelector("table");
         clickable.addEventListener("click", (event) => {
+
             const which = event.target;
             const border = document.querySelectorAll(".operation");
             let operationSelected = false;
@@ -145,7 +154,7 @@
             case "num": 
                 const ac = document.querySelector("#undo");
                 ac.textContent = "C";
-                if(val.textContent[val.textContent.length - 1] === "." && which.textContent === "."){
+                if(val.textContent.includes(".") && which.textContent === "."){
                     alert("You cannot add another dot");
                 }
 
@@ -216,7 +225,6 @@
 
             case "sign": 
                 if(which.textContent === "AC" || which.textContent === "C"){
-                    console.log(history);
                     const border = document.querySelectorAll(".operation");
                     border.forEach(element => {
                     element.setAttribute("style", "solid 1px #555"); 
@@ -259,6 +267,42 @@
                 break;
             }
         });
+
+        clickable.addEventListener("mousedown", (event) => {
+            const which = event.target;
+            switch(which.className){
+            case "sign":
+                which.setAttribute("style", "background-color: #AAA")
+                break;
+
+            case "num":
+                which.setAttribute("style", "background-color: #444")
+                break;
+            
+            case "operation":
+                which.setAttribute("style", "background-color: #a96123");
+                break;
+            }
+        });
+
+        clickable.addEventListener("mouseup", (event) => {
+            const which = event.target;
+            switch(which.className){
+            case "sign":
+                which.setAttribute("style", "background-color: #777")
+                break;
+
+            case "num":
+                which.setAttribute("style", "background-color: #AAA")
+                break;
+            
+            case "operation":
+                which.setAttribute("style", "background-color: #e8852e");
+                break;
+            }
+        });
+
+
     </script>
     
 </body>
