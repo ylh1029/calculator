@@ -122,6 +122,7 @@
         let rhs;
         let operation;
         let dispVal;
+        let currVal;
         let result;
         let screen = document.querySelector("th");
         let val = document.createElement("p");
@@ -142,28 +143,32 @@
             switch (which.className){
             case "num": 
                 if(val.textContent.length === 1 && val.textContent === "0"){
-                    dispVal = which.textContent;
+                    currVal = which.textContent;
+                    dispVal = currVal;
                     val.textContent = dispVal;
                 }
             
                 else if (!operationSelected && result === dispVal){
                     operation = "";
-                    dispVal = which.textContent;
+                    currVal = which.textContent;
+                    dispVal = currVal;
                     val.textContent = dispVal;
                 }
 
                 else{
-                    dispVal += which.textContent;
+                    currVal += which.textContent;
+                    dispVal = currVal;
                     val.textContent = dispVal;
                 }
                 break;
 
             case "operation": 
+                const border = document.querySelectorAll(".operation");
+                        border.forEach(element => {
+                            element.setAttribute("style", "solid 1px #555"); 
+                        });
+
                 if(which.textContent === "="){
-                    const border = document.querySelectorAll(".operation");
-                    border.forEach(element => {
-                        element.setAttribute("style", "solid 1px #555"); 
-                    });
                     rhs = dispVal;
                     lhs = operate(lhs, rhs, operation);
                     dispVal = lhs;
@@ -172,9 +177,10 @@
                 }
                 else{
                     lhs = dispVal;
+                    console.log(`lhs: ${lhs}`);
                     operation = event.target.textContent;
                     which.setAttribute("style", "border: solid 2px #000");
-                    dispVal = "";
+                    currVal = "";
                 }
                 break;
 
