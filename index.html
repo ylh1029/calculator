@@ -52,7 +52,7 @@
         </tr>
 
         <tr>
-            <td class="sign">AC</td>
+            <td class="sign" id="undo">AC</td>
             <td class="sign">+/-</td>
             <td class="sign">%</td>
             <td class="operation" id="&#247">&#247</td>
@@ -120,12 +120,13 @@
 
         let lhs;
         let rhs;
-        let operation;
+        let operation = "";
         let dispVal;
-        let currVal;
+        let currVal = "0";
         let result;
         let screen = document.querySelector("th");
         let val = document.createElement("p");
+        let history = [0];
         val.textContent = "0";
         screen.append(val);
 
@@ -142,14 +143,29 @@
             });
             switch (which.className){
             case "num": 
-                if(val.textContent.length === 1 && val.textContent === "0"){
-                    currVal = which.textContent;
-                    dispVal = currVal;
-                    val.textContent = dispVal;
+                const ac = document.querySelector("#undo");
+                ac.textContent = "C";
+                if(val.textContent[val.textContent.length - 1] === "." && which.textContent === "."){
+                    alert("You cannot add another dot");
+                }
+
+                else if(val.textContent.length === 1 && val.textContent === "0"){
+                    if(which.textContent === "."){
+                        currVal += which.textContent;
+                        dispVal = currVal;
+                        val.textContent = dispVal;
+                    }
+
+                    else {
+                        currVal = which.textContent;
+                        dispVal = currVal;
+                        val.textContent = dispVal;
+                    }
                 }
             
                 else if (!operationSelected && result === dispVal){
                     operation = "";
+                    history = [0];
                     currVal = which.textContent;
                     dispVal = currVal;
                     val.textContent = dispVal;
@@ -160,33 +176,71 @@
                     dispVal = currVal;
                     val.textContent = dispVal;
                 }
+
+                history.push(which.textContent);
                 break;
 
             case "operation": 
                 const border = document.querySelectorAll(".operation");
-                        border.forEach(element => {
-                            element.setAttribute("style", "solid 1px #555"); 
-                        });
+                border.forEach(element => {
+                    element.setAttribute("style", "solid 1px #555"); 
+                });
 
                 if(which.textContent === "="){
-                    rhs = dispVal;
-                    lhs = operate(lhs, rhs, operation);
-                    dispVal = lhs;
+                    if(operation === ""){
+                        return;
+                    }
+
+                    rhs = currVal; 
+                    console.log(`rhs: ${rhs}`);
+                    console.log(`lhs: ${lhs}`);                                     
+                    dispVal = operate(lhs, rhs, operation);
+                    lhs = dispVal;
                     val.textContent = dispVal;
                     result = dispVal;
+                    history = [result];
                 }
+
                 else{
                     lhs = dispVal;
-                    console.log(`lhs: ${lhs}`);
                     operation = event.target.textContent;
                     which.setAttribute("style", "border: solid 2px #000");
                     currVal = "";
+                    const oper = ["\u002B", "\u2212", "\u00D7", "\u00F7"];
+                    if(oper.includes(history.at(history.length-1))){
+                        history.pop();
+                    }
+                    history.push(operation);
                 }
                 break;
 
             case "sign": 
-                if(which.textContent === "AC"){
-                    val.textContent = "0";
+                if(which.textContent === "AC" || which.textContent === "C"){
+                    console.log(history);
+                    const border = document.querySelectorAll(".operation");
+                    border.forEach(element => {
+                    element.setAttribute("style", "solid 1px #555"); 
+                    });
+                    const prev = history.pop();
+                    const oper = ["\u002B", "\u2212", "\u00D7", "\u00F7"];
+
+                    if(operation.includes(prev)){
+
+                        operation = "";
+                    }
+
+                    else if(Number(prev) < 10 && Number(prev) >= 0){
+                        if(currVal.length === 1){
+                            currVal = 0;
+                        }
+
+                        else{
+                            currVal = currVal.substring(0, currVal.length-1);
+                        }
+                        dispVal = currVal;
+                        val.textContent = dispVal;
+                    }
+                    which.textContent = "AC";
                 }
 
                 else if (which.textContent === "+/-"){
