@@ -222,12 +222,15 @@
 
             case "sign": 
                 if(which.textContent === "AC" || which.textContent === "C"){
-                    const border = document.querySelectorAll(".operation");
-                    border.forEach(element => {
-                    element.setAttribute("style", "solid 1px #555"); 
-                    });
                     const prev = history.pop();
                     const oper = ["\u002B", "\u2212", "\u00D7", "\u00F7"];
+
+                    if(!(oper.includes(history.at(history.length-1)))){
+                        const border = document.querySelectorAll(".operation");
+                        border.forEach(element => {
+                            element.setAttribute("style", "solid 1px #555"); 
+                        });
+                    }
 
                     if(operation.includes(prev)){
 
